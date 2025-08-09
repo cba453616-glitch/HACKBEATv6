@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WARNING - Kunci HP (Demo)</title>
+  <style>
+    :root{
+      --accent:#d50000;
+      --muted:#cfcfcf;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: url('wouy.jpg') no-repeat center center fixed;
+      background-size: cover;
+      -webkit-font-smoothing:antialiased;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .card{
+      width:100%;
+      max-width:420px;
+      padding:28px;
+      text-align:center;
+      background: rgba(0,0,0,0.6);
+      border-radius:10px;
+    }
+    .warning-title{
+      color:var(--accent);
+      font-weight:800;
+      letter-spacing:2px;
+      font-size:22px;
+      margin-bottom:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+    .warning-title .tri{
+      width:24px;
+      height:24px;
+      border-radius:4px;
+      background:linear-gradient(180deg,#fff3cd,#ffe8a1);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      color:#7a4a00;
+      font-weight:900;
+    }
+    .hint{
+      color:#ddd;
+      margin:12px 0 18px;
+      font-size:15px;
+    }
+    input[type="password"]{
+      width:100%;
+      padding:12px 14px;
+      border-radius:6px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.1);
+      color:var(--muted);
+      font-size:16px;
+      outline:none;
+      box-sizing:border-box;
+    }
+    .btn{
+      display:inline-block;
+      margin-top:14px;
+      padding:12px 22px;
+      background:var(--accent);
+      color:#fff;
+      font-weight:700;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+      width:100%;
+      font-size:16px;
+    }
+    .msg{
+      margin-top:10px;
+      height:22px;
+      font-weight:700;
+    }
+    .msg.error{ color:#ff8a8a; }
+    .msg.success{ color:#9bffb0; }
+  </style>
+</head>
+<body>
+  <div class="card" id="warningBox">
+    <div class="warning-title">
+      <span class="tri">!</span>
+      WARNING HP ANDA TERKENA VIRUS
+      <span class="tri">!</span>
+    </div>
+    <div class="hint">Masukkan PIN untuk menghapus</div>
+    <input id="pinInput" type="password" placeholder="Masukkan PIN" autocomplete="off" maxlength="10" />
+    <button id="unlockBtn" class="btn">Buka Kunci</button>
+    <div id="msg" class="msg" aria-live="polite"></div>
+  </div>
+
+  <script>
+    const CORRECT_PIN = "123";
+    const input = document.getElementById('pinInput');
+    const btn = document.getElementById('unlockBtn');
+    const msg = document.getElementById('msg');
+    const warningBox = document.getElementById('warningBox');
+
+    function showMessage(text, type){
+      msg.textContent = text;
+      msg.className = 'msg ' + (type === 'error' ? 'error' : (type === 'success' ? 'success' : ''));
+    }
+
+    btn.addEventListener('click', function(){
+      const val = input.value.trim();
+      if(val === "") {
+        showMessage("Masukkan PIN terlebih dahulu", "error");
+        return;
+      }
+      if(val === CORRECT_PIN){
+        warningBox.remove();
+        document.body.innerHTML = "<h2 style='color:#9bffb0;text-align:center;'>VIRUS DI HAPUS .</h2>";
+      } else {
+        showMessage("Salah", "error");
+        input.value = "";
+        input.focus();
+      }
+    });
+
+    input.addEventListener('keydown', function(e){
+      if(e.key === "Enter") btn.click();
+    });
+  </script>
+</body>
+</html>
